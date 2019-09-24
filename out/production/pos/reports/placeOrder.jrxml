@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="order" pageWidth="298" pageHeight="420" whenNoDataType="BlankPage" columnWidth="258" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="66c45b1e-91dc-4d0a-94a9-768151f22fd5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="pos"/>
+	<property name="com.jaspersoft.studio.unit." value="mm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="mm"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="subReport" class="net.sf.jasperreports.engine.JasperReport"/>
+	<parameter name="orderID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT pos.orders.`orderId`,
+       pos.orders.`orderDate`,
+       pos.orders.`customerId`,
+       sum(pos.`orderDetail`.qty * pos.`orderDetail`.`unitPrice`) AS total,
+       pos.customer.name
+FROM pos.`orderDetail`
+         INNER JOIN pos.orders ON
+        pos.`orderDetail`.`orderId` = pos.orders.`orderId`
+         INNER JOIN pos.item ON
+        pos.`orderDetail`.`itemCode` = pos.item.`itemCode`
+         INNER JOIN pos.customer ON
+        pos.orders.`customerId` = pos.customer.id
+WHERE  pos.orders.`orderId` =$P{orderID} group by orders.orderId;]]>
+	</queryString>
+	<field name="orderId" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="orderId"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
+	</field>
+	<field name="orderDate" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="orderDate"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
+	</field>
+	<field name="customerId" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="customerId"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="orders"/>
+	</field>
+	<field name="total" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+	</field>
+	<variable name="net_amount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="57" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-1" y="3" width="261" height="49" uuid="eaed4a28-4829-4255-a4fa-6c7cc896b54a"/>
+				<graphicElement>
+					<pen lineWidth="4.0" lineStyle="Double"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="55" y="6" width="166" height="30" uuid="3ba58cba-0402-476e-a722-aa1f45e9662c"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ABC Super Mart"]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="21" y="6" width="33" height="27" uuid="aa9dd9a2-c645-498c-ab72-666f18c775de"/>
+				<imageExpression><![CDATA["/home/ash/IdeaProjects/POSnew/pos/src/img/2.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="53" y="28" width="160" height="11" uuid="d6b13b9b-51de-4b0b-8be1-19b265ae001c"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["No. 577/A, Galle Road, Panadura."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="55" y="37" width="160" height="11" uuid="5ab61157-abc4-4b6b-8961-1b1604f1bb3f"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tel : 011 - 2255478"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="38" splitType="Stretch">
+			<textField>
+				<reportElement x="63" y="0" width="54" height="20" uuid="caefe931-4598-4d19-8cc7-d10506b93581"/>
+				<textFieldExpression><![CDATA[$F{orderId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="62" height="19" uuid="b924d836-aa2f-4c67-b38b-e1c8bdc687ab"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Order ID : "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="112" y="0" width="42" height="19" uuid="adfb1a57-bcc2-462d-9385-71838399c8f9"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Date : "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="161" y="1" width="71" height="19" uuid="a3792e64-e21b-4556-85b0-ed851973caab"/>
+				<textFieldExpression><![CDATA[$F{orderDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="17" width="62" height="19" uuid="52f6de68-c446-43fe-9bce-b3451f88b8e7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cust ID : "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="17" width="58" height="18" uuid="ca4e1e07-2fe6-4d78-a61d-326b2082f80a"/>
+				<textFieldExpression><![CDATA[$F{customerId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="112" y="17" width="62" height="19" uuid="d3fe949f-8df3-4772-a82e-dde105e34e47"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cust name  : "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="176" y="18" width="80" height="20" uuid="ab1fe6d7-e4e7-4087-83ef-10d70d682284"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="47" splitType="Stretch">
+			<subreport>
+				<reportElement x="32" y="0" width="202" height="43" uuid="fbf80447-bd78-4965-82ed-5064b839e8eb"/>
+				<subreportParameter name="subOrderId">
+					<subreportParameterExpression><![CDATA[$P{orderID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{subReport}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="55" y="4" width="78" height="15" uuid="bcc0df3a-9703-42d1-a6ef-1bc50670eddb"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Net amount  : "]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)">
+				<reportElement x="135" y="4" width="98" height="15" uuid="617e9d07-7a61-43ad-ab42-da03f2718b6d"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_amount}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="0" y="1" width="256" height="20" uuid="c8b7a917-765a-4e3e-bb3a-ef854eba2b9a"/>
+				<box>
+					<pen lineWidth="1.5" lineStyle="Dashed"/>
+				</box>
+			</frame>
+		</band>
+	</columnFooter>
+</jasperReport>
